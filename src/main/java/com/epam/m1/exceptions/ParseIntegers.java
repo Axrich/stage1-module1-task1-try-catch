@@ -1,7 +1,10 @@
 package com.epam.m1.exceptions;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+import java.lang.*;
 import java.util.stream.Collectors;
 
 /**
@@ -11,27 +14,33 @@ import java.util.stream.Collectors;
 public class ParseIntegers {
 
     private static final List<String> WORDS = Arrays.asList(
-            "JDK 17 has released on 14 September 2021 with 10 new features, 2 feature removals and 2 feature deprecations."
-                    .split(" "));
+                    "JDK 17 has released on 14 September 2021 with 10 new features, 2 feature removals and 2 feature deprecations."
+                            .split(" "));
 
     public static void main(String[] args) {
+        Iterator<String> words = WORDS.iterator();
         int sum = 0;
-        StringBuilder justWords = new StringBuilder();
-
-        for (String word : WORDS) {
+        String justWords = "";
+        while (words.hasNext()) {
+            String next = words.next();
             try {
-                int number = Integer.parseInt(word);
-                sum += number;
+                int number = Integer.parseInt(next);
             } catch (NumberFormatException e) {
-                // Append non-numeric words to justWords with a space delimiter
-                justWords.append(word).append(" ");
+                e.getMessage();
             }
         }
 
-        // Trim any trailing space from justWords
-        String justWordsString = justWords.toString().trim();
+        for (String word : WORDS) {
+            if (word.matches("\\d+")) {
+                sum += Integer.parseInt(word);
+            }
+        }
+
+        String forJustWords = " JDK 17 has released on 14 September 2021 with 10 new features, 2 feature removals and 2 feature deprecations.";
+
+        justWords = forJustWords.replaceAll("\\d+ ", "");
 
         System.out.println("Sum is " + sum);
-        System.out.println("Just words: " + justWordsString);
+        System.out.println("Just words:" + justWords);
     }
 }
